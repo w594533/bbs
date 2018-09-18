@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Http\Requests\API;
+
+use Dingo\Api\Http\FormRequest;
+
+class ImageRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        $rules = [
+          'type' => 'required|string|in:avatar,topic',
+        ];
+
+        if ($this->type == 'avatar') {
+          $rules['image'] =  'required|mimes:jpeg,bmp,png,gif|dimensions:min_width=300,min_height=300';
+        } else if($this->type == 'topic') {
+          $rules['image'] = 'required|mimes:jpeg,bmp,png,gif';
+        }
+
+        return $rules;
+    }
+}
