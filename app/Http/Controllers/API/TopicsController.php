@@ -25,13 +25,13 @@ class TopicsController extends Controller
     //某个用户的话题列表
     public function userIndex(User $user, Topic $topic)
     {
-      $topics = $topic->where('user_id', $user->id)->recent()->paginate(20);
-      return $this->response->paginator($topics, new TopicTransFormer);
+        $topics = $topic->where('user_id', $user->id)->recent()->paginate(20);
+        return $this->response->paginator($topics, new TopicTransFormer);
     }
 
     public function show(Topic $topic)
     {
-      return $this->response->item($topic, new TopicTransFormer);
+        return $this->response->item($topic, new TopicTransFormer);
     }
 
 

@@ -12,12 +12,13 @@ class TopicPolicy
 
     public function update(User $user, Topic $topic)
     {
-        return $user->id === $topic->user_id;
+        return $user->isAuthorOf($topic);
     }
 
     public function delete(User $user, Topic $topic)
     {
-        return $user->id === $topic->user_id;
+        //是否具有管理内容的权限，或者是发帖者本人可以删除
+        return $user->hasPermissionTo('manage_contents') || $user->isAuthorOf($topic);
     }
 
 }

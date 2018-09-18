@@ -28,10 +28,10 @@ class UsersController extends Controller
         }
 
         $user = User::create([
-        'name' => $request->name,
-        'phone' => $cache['phone'],
-        'password' => Hash::make($request->password)
-      ]);
+          'name' => $request->name,
+          'phone' => $cache['phone'],
+          'password' => Hash::make($request->password)
+        ]);
 
         //清除缓存
         Cache::forget($request->verification_key);
@@ -41,7 +41,6 @@ class UsersController extends Controller
 
     public function me()
     {
-        $meta = [];
         return $this->response->item($this->user(), new UserTransFormer);
     }
 

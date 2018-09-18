@@ -15,5 +15,6 @@ Route::group([
     $router->resource('users', 'UserController');
     $router->resource('roles', 'RoleController');
     $router->resource('permissions', 'PermissionController');
+    $router->resource('categories', 'CategoryController');
 
 });

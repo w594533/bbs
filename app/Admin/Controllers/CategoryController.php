@@ -2,16 +2,15 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Role;
+use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
-use App\Models\Permission;
 
-class RoleController extends Controller
+class CategoryController extends Controller
 {
     use HasResourceActions;
 
@@ -24,8 +23,8 @@ class RoleController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('角色')
-            ->description('用户角色')
+            ->header('列表')
+            ->description('分类')
             ->body($this->grid());
     }
 
@@ -40,7 +39,7 @@ class RoleController extends Controller
     {
         return $content
             ->header('详情')
-            ->description('用户角色')
+            ->description('分类')
             ->body($this->detail($id));
     }
 
@@ -55,7 +54,7 @@ class RoleController extends Controller
     {
         return $content
             ->header('编辑')
-            ->description('角色')
+            ->description('分类')
             ->body($this->form()->edit($id));
     }
 
@@ -69,7 +68,7 @@ class RoleController extends Controller
     {
         return $content
             ->header('创建')
-            ->description('角色')
+            ->description('分类')
             ->body($this->form());
     }
 
@@ -80,30 +79,16 @@ class RoleController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Role);
+        $grid = new Grid(new Category);
+
         $grid->filter(function($filter) {
           $filter->disableIdFilter();
-          $filter->like('name', '标识');
+          $filter->like('name', '名称');
         });
-        $grid->disableExport();
-        $grid->actions(function ($actions) {
-            $actions->disableDelete();
-            $actions->disableView();
-        });
-        $grid->tools(function ($tools) {
-            $tools->batch(function ($batch) {
-                $batch->disableDelete();
-            });
-        });
-        $grid->id('Id');
-        $grid->name('标识');
-        $grid->permissions('权限')->display(function ($permissions) {
-            $permissions = array_map(function ($permission) {
-                return "<span class='label label-success'>{$permission['name']}</span>";
-            }, $permissions);
-            return join('&nbsp;', $permissions);
-        });
+        // $grid->id('Id');
+        $grid->name('名称');
         $grid->created_at('创建时间');
+        // $grid->updated_at('Updated at');
 
         return $grid;
     }
@@ -116,11 +101,12 @@ class RoleController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Role::findOrFail($id));
+        $show = new Show(Category::findOrFail($id));
 
         $show->id('Id');
-        $show->name('标识');
+        $show->name('名称');
         $show->created_at('创建时间');
+        // $show->updated_at('Updated at');
 
         return $show;
     }
@@ -132,28 +118,10 @@ class RoleController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Role);
-        $form->disableEditingCheck();
-        $form->disableViewCheck();
-        $form->tools(function (Form\Tools $tools) {
-            $tools->disableDelete();
-            $tools->disableView();
-        });
-        $form->display('name', '标识')->help('修改标识会影响代码的调用，请不要轻易更改。');
-        $form->multipleSelect('permissions', '权限')->options(Permission::all()->pluck('name', 'id'));
+        $form = new Form(new Category);
+
+        $form->text('name', '名称');
 
         return $form;
-    }
-
-    /**
-    * 重写HasResourceActions 不允许删除
-    **/
-    public function destroy($id)
-    {
-        $data = [
-            'status'  => false,
-            'message' => '禁止删除',
-        ];
-        return response()->json($data);
     }
 }

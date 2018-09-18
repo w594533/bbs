@@ -84,4 +84,9 @@ class User extends Authenticatable
 
         return self::where($credentials)->first();
     }
+
+    public function isAuthorOf($model)
+    {
+        return $this->id === $model->user_id;
+    }
 }

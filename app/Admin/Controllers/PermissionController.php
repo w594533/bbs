@@ -25,6 +25,7 @@ class PermissionController extends Controller
     {
         return $content
             ->header('列表')
+            ->description('权限')
             ->body($this->grid());
     }
 
@@ -39,6 +40,7 @@ class PermissionController extends Controller
     {
         return $content
             ->header('详情')
+            ->description('权限')
             ->body($this->detail($id));
     }
 
@@ -53,6 +55,7 @@ class PermissionController extends Controller
     {
         return $content
             ->header('编辑')
+            ->description('权限')
             ->body($this->form()->edit($id));
     }
 
@@ -66,6 +69,7 @@ class PermissionController extends Controller
     {
         return $content
             ->header('创建')
+            ->description('权限')
             ->body($this->form());
     }
 
@@ -80,8 +84,7 @@ class PermissionController extends Controller
 
         $grid->filter(function ($filter) {
             $filter->disableIdFilter();
-            $filter->like('name', '名称');
-            $filter->like('guard_name', '标识');
+            $filter->like('name', '标识');
         });
         $grid->disableExport();
 
@@ -96,8 +99,7 @@ class PermissionController extends Controller
         });
 
         $grid->id('Id');
-        $grid->name('名称');
-        $grid->guard_name('标识');
+        $grid->name('标识');
         $grid->roles('角色')->display(function ($roles) {
             $roles = array_map(function ($role) {
                 return "<span class='label label-success'>{$role['name']}</span>";
@@ -118,8 +120,7 @@ class PermissionController extends Controller
         $show = new Show(Permission::findOrFail($id));
 
         $show->id('Id');
-        $show->name('名称');
-        $show->guard_name('标识');
+        $show->name('标识');
 
         return $show;
     }
@@ -140,10 +141,8 @@ class PermissionController extends Controller
             $tools->disableDelete();
         });
 
-        $form->text('name', '名称');
+        $form->display('name', '标识')->help('修改权限标识会影响代码的调用，请不要轻易更改。');
         $form->multipleSelect('roles', '角色')->options(Role::all()->pluck('name', 'id'));
-        $form->display('guard_name', '标识')->help('修改权限标识会影响代码的调用，请不要轻易更改。');
-
         return $form;
     }
 
