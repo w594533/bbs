@@ -163,6 +163,7 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         \SocialiteProviders\Manager\ServiceProvider::class,
         Mews\Purifier\PurifierServiceProvider::class,
+        Orangehill\Iseed\IseedServiceProvider::class,
 
     ],
 
