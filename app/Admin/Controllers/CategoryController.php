@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Category;
+use App\Models\Topic;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -80,10 +81,10 @@ class CategoryController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Category);
-
-        $grid->filter(function($filter) {
-          $filter->disableIdFilter();
-          $filter->like('name', '名称');
+        $grid->disableExport();
+        $grid->filter(function ($filter) {
+            $filter->disableIdFilter();
+            $filter->like('name', '名称');
         });
         // $grid->id('Id');
         $grid->name('名称');
@@ -123,5 +124,23 @@ class CategoryController extends Controller
         $form->text('name', '名称');
 
         return $form;
+    }
+
+    public function destroy($id)
+    {
+        $count = Topic::where('category_id', $id)->count();
+        if ($count > 0) {
+            $data = [
+            'status' => false,
+            'message' => '有关联文章数据，不能删除。'
+          ];
+        } else {
+            $category = Category::find($id)->delete();
+            $data = [
+            'status'  => true,
+            'message' => trans('admin.delete_succeeded'),
+          ];
+        }
+        return response()->json($data);
     }
 }

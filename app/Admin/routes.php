@@ -16,5 +16,6 @@ Route::group([
     $router->resource('roles', 'RoleController');
     $router->resource('permissions', 'PermissionController');
     $router->resource('categories', 'CategoryController');
+    $router->resource('topics', 'TopicController', ['only' => ['index', 'show', 'destroy']]);
 
 });
