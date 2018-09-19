@@ -49,6 +49,9 @@ $api->version('v1', [
   //边栏活跃用户
   $api->get('actived_users', 'UsersController@activedUsers')->name('api.user.actived_users');
 
+  //友情链接
+  $api->get('friend_links', 'FriendLinksController@index')->name('api.friend_links.index');
+
   $api->group(['middleware' => 'auth:api'], function($api) {
       // 当前登录用户信息
       $api->get('/users', 'UsersController@me')->name('api.users.show');

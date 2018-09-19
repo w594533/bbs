@@ -12,10 +12,11 @@ Route::group([
 
     $router->get('/', 'HomeController@index');
 
-    $router->resource('users', 'UserController');
-    $router->resource('roles', 'RoleController');
-    $router->resource('permissions', 'PermissionController');
+    $router->resource('users', 'UserController', ['only' => ['index', 'show', 'edit', 'update']]);
+    $router->resource('roles', 'RoleController', ['only' => ['index', 'edit', 'update', 'create']]);
+    $router->resource('permissions', 'PermissionController', ['only' => ['index', 'edit', 'update', 'create']]);
     $router->resource('categories', 'CategoryController');
     $router->resource('topics', 'TopicController', ['only' => ['index', 'show', 'destroy']]);
+    $router->resource('friend_links', 'FriendLinkController');
 
 });
