@@ -10,6 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
  */
+ //接口文档地址
+Route::get('/swagger/doc', 'SwaggerController@doc')->name('swagger.doc');
 
 Route::get('/', function () {
     return view('welcome');
